@@ -19,7 +19,7 @@ Then:
 
 - Open Git Bash
 - Change the current working directory to the location you want it
-- Type `git clone https://github.com/YOUR-USERNAME/project-exam-2` and press enter.
+- Type `git clone https://github.com/USERNAME/project-exam-2` and press enter.
   Your local clone will then be created.
 
 ### **Running**
