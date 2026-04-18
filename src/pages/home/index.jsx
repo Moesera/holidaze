@@ -25,7 +25,7 @@ function Home() {
    */
   useEffect(() => {
     if (data) {
-      setOriginalData(data.data || data);
+      setOriginalData(data);
     }
   }, [data]);
 
@@ -62,14 +62,17 @@ function Home() {
    * filtering search query from user.
    */
   useEffect(() => {
-    const searchData = filterData.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.location.continent.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.location.city.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.location.country.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const searchData = filterData.filter((item) => {
+      const searchTerm = searchInput?.toLowerCase() ?? "";
+
+      return (
+        (item.name ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.description ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.location.continent ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.location.city ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.location.country ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm))
+      );
+    });
 
     setSearchData(searchData);
   }, [originalData, searchInput, filterData]);
