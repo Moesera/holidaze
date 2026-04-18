@@ -22,11 +22,10 @@ function Home() {
 
   /**
    * Sets the originalData back to original.
-   * TODO: Maybe use a more updated method where the filtering does not delete original array.
    */
   useEffect(() => {
     if (data) {
-      setOriginalData(data);
+      setOriginalData(data.data || data);
     }
   }, [data]);
 
