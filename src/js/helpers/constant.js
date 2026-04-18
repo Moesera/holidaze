@@ -1,4 +1,4 @@
-const api = "https://nf-api.onrender.com/api/v1/holidaze/"
+const api = "https://v2.api.noroff.dev/holidaze/"
 
 export const venues = `${api}venues/`;
 export const profile = `${api}profiles/`;
