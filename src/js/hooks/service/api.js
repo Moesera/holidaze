@@ -35,9 +35,6 @@ export function useApi(url) {
  * 
  * apiData(body, method);
  * }
- * 
- * 
- * 
  * ```
  */
   async function apiData(body, method) {
