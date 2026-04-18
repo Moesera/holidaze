@@ -52,22 +52,30 @@ export function useGet(url, offset, limit) {
         setIsError(false);
         let dataResults;
 
-          if(offset === undefined) {
-            dataResults = await fetch(url, options);
-            if(dataResults.errors && dataResults.errors.length > 0) {
-              const errorMessage = data.errors[0].message;
-              throw new Error(errorMessage);
-            }
-          } else {
+        if(offset === undefined) {
+          dataResults = await fetch(url, options);
+        } else {
           dataResults = await fetch(`${url}?limit=${limit}&offset=${offset}`);
-          if (!dataResults.ok) {
-            throw new Error(dataResults.statusCode);
-          }
         }
 
+        // check status on response object
+        if (!dataResults.ok) {
+          throw new Error(`http ${dataResults.statusCode} : ${dataResults.statusText}`);
+        }
+
+        // parse response to json
         const json = await dataResults.json();
 
-        setData(json);
+        // Check for api errors in the json
+        if(json.errors && json.errors.length > 0) {
+          const errorMessage = json.errors[0].message;
+          throw new Error(errorMessage);
+        }
+
+        // Check if data is nested
+        const innerData = json.data || data;
+
+        setData(innerData);
       } catch (error) {
         console.log(error);
         setIsError(error);
