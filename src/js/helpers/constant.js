@@ -1,10 +1,11 @@
-const api = "https://v2.api.noroff.dev/holidaze/"
+const api = "https://v2.api.noroff.dev/";
+const endpoint = "holidaze/";
 
-export const venues = `${api}venues/`;
-export const profile = `${api}profiles/`;
+export const venues = `${api}${endpoint}venues/`;
+export const profile = `${api}${endpoint}profiles/`;
 export const register = `${api}auth/register`;
 export const login = `${api}auth/login`;
-export const bookings = `${api}bookings/`;
+export const bookings = `${api}${endpoint}bookings/`;
 
 // ?_customer=true?_venue=true/
 
