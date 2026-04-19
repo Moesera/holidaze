@@ -30,20 +30,28 @@ import { getItem } from "../../localStorage/getItem";
  * }
  * ```
  */
-export function useGet(url, offset, limit) {
+export function useGet(url, offset, limit, auth = false) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-
   const token = getItem("token");
+  const API_KEY = process.env.REACT_APP_NOROFF_API_KEY;
 
-  const options = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-  }, [token]);
+  const buildHeader = ({ auth }) => {
+    const headers = {};
+
+    if (token) headers.Authorization = `Bearer ${token}`;
+    if (auth && API_KEY) headers["X-Noroff-API-Key"] = API_KEY;
+
+    return headers;
+  }
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Noroff-API-Key": API_KEY
+    }
+  };
 
   useEffect(() => {
     async function getData() {
@@ -85,7 +93,7 @@ export function useGet(url, offset, limit) {
     }
 
     getData();
-  }, [url, options, data.errors, offset, limit]);
+  }, [url, token, data.errors, offset, limit]);
 
   if (data) {
     return { data, isLoading, isError };
