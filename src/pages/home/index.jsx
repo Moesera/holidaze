@@ -22,7 +22,6 @@ function Home() {
 
   /**
    * Sets the originalData back to original.
-   * TODO: Maybe use a more updated method where the filtering does not delete original array.
    */
   useEffect(() => {
     if (data) {
@@ -63,14 +62,17 @@ function Home() {
    * filtering search query from user.
    */
   useEffect(() => {
-    const searchData = filterData.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.location.continent.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.location.city.toLowerCase().includes(searchInput.toLowerCase()) ||
-        item.location.country.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const searchData = filterData.filter((item) => {
+      const searchTerm = searchInput?.toLowerCase() ?? "";
+
+      return (
+        (item.name ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.description ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.location.continent ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.location.city ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm)) ||
+        (item.location.country ?? "").toLowerCase().includes(searchInput.toLowerCase(searchTerm))
+      );
+    });
 
     setSearchData(searchData);
   }, [originalData, searchInput, filterData]);

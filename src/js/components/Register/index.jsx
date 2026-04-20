@@ -31,15 +31,15 @@ function RegisterForm({ setShow }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [isManager, setIsManager] = useState(false);
-  const [chosenAvatar, setChosenAvatar] = useState(false);
+  // const [chosenAvatar, setChosenAvatar] = useState({});
   const [password, setPassword] = useState("");
 
   const resetForm = useCallback(() => {
-    setAvatars("");
+    // setAvatars([]);
     setUsername("");
     setEmail("");
-    setIsManager("");
-    setChosenAvatar("");
+    setIsManager(false);
+    // setChosenAvatar([]);
     setPassword("");
 
     setTimeout(() => {
@@ -53,28 +53,29 @@ function RegisterForm({ setShow }) {
     }
   }, [isSuccess, resetForm]);
 
-  function addImage() {
-    // This is the new avatar image from the url input
-    const newAvatar = imageUrl;
-    increment({ setCount, count });
-    //  Setting the new avatar into the avatar array
-    setAvatars([...avatars, newAvatar]);
+  // function addImage() {
+  //   // This is the new avatar image from the url input
+  //   const newAvatar = imageUrl;
+  //   increment({ setCount, count });
+  //   //  Setting the new avatar into the avatar array
+  //   setAvatars([...avatars, { url: newAvatar, alt: "Custom avatar"}]);
+  //   setImageUrl("");
+  // }
 
-    setImageUrl("");
-  }
+  // function handleAvatarChange() {
+  //   const avatarRadioButtons = avatarContainerRef.current.querySelectorAll(
+  //     `input[type="radio"][name="avatar"]`
+  //   );
+  //   let chosenAvatarValue;
 
-  function handleAvatarChange() {
-    const avatarRadioButtons = avatarContainerRef.current.querySelectorAll(
-      `input[type="radio"][name="avatar"]`
-    );
-    let chosenAvatarValue;
-    avatarRadioButtons.forEach((radioButton) => {
-      if (radioButton.checked) {
-        chosenAvatarValue = radioButton.value;
-      }
-    });
-    setChosenAvatar(chosenAvatarValue);
-  }
+  //   avatarRadioButtons.forEach((radioButton) => {
+  //     if (radioButton.checked) {
+  //       chosenAvatarValue = {url: radioButton.value, alt: "Selected Avatar"};
+  //     }
+  //   });
+
+  //   setChosenAvatar(chosenAvatarValue);
+  // }
 
   function handleUserTypeChange(event) {
     if (event.target.value === "manager") {
@@ -88,17 +89,21 @@ function RegisterForm({ setShow }) {
     setIsHidden(!isHidden);
   }
 
-  // account type does not change,
-  // need to create something that changes it
-  // and keeps up with the state before registering
   function handleSubmit(e) {
     e.preventDefault();
+
+    // Validate email format and domain (case-insensitive)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/i;
+    if (!emailRegex.test(email)) {
+      alert("Email must be a valid @stud.noroff.no address (case insensitive).");
+      return;
+    }
 
     const options = {
       name: username,
       email: email,
       password: password,
-      avatar: chosenAvatar,
+      // avatar: chosenAvatar,
       venueManager: isManager,
     };
 
@@ -139,7 +144,6 @@ function RegisterForm({ setShow }) {
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            pattern="^[a-zA-Z0-9._%+-]+@stud.noroff.no$"
             autoComplete="email"
             required
           />
@@ -157,76 +161,7 @@ function RegisterForm({ setShow }) {
           />
         </label>
         {/* Avatar */}
-        <div className="flex flex-col font-inder">
-          Avatar
-          <div
-            id="avatarContainer"
-            ref={avatarContainerRef}
-            className="flex gap-4"
-            onChange={handleAvatarChange}
-          >
-            <label>
-              <input
-                className="hidden"
-                type="radio"
-                id="preset"
-                name="avatar"
-                value={AvatarPlaceholder}
-              />
-              <figure className="w-20 h-20 p-2 rounded-lg shadow-3xl hover:cursor-pointer hover:border hover:border-gray">
-                <img
-                  className="object-cover w-full h-full"
-                  src={AvatarPlaceholder}
-                  alt="placeholder"
-                  pattern="^(https?|ftp):\/\/(-\.)?([^\s/?\.#-]+\.?)+(\/[^\s]*)?$"
-                />
-              </figure>
-            </label>
-            <NewAvatar
-              avatars={avatars}
-              setAvatars={setAvatars}
-              count={count}
-              setCount={setCount}
-            />
-            {/*  */}
-            {/* Add image button */}
-            <button
-              onClick={setHidden}
-              id="addAvatar"
-              type="button"
-              className={`w-20 p-2 rounded-lg shadow-3xl hover:border hover:border-gray transition-opacity duration-300`}
-            >
-              <img
-                className="object-cover w-full h-full transition-opacity duration-300"
-                src={isHidden ? AddIcon : CancelIcon}
-                alt="add"
-              />
-            </button>
-            {/* End of image button */}
-          </div>
-          <label className="flex gap-4 mt-2">
-            <input
-              id="imageUrl"
-              className={`w-full p-2 border rounded-lg transition-opacity duration-300 ${
-                isHidden ? "opacity-0" : "opacity-100"
-              }`}
-              type="url"
-              placeholder="enter your jpg url"
-              value={imageUrl}
-              onChange={(event) => setImageUrl(event.target.value)}
-              pattern="^(https?|ftp):\/\/(-\.)?([^\s/?\.#-]+\.?)+(\/[^\s]*)?$"
-            />
-            <button
-              type="button"
-              onClick={addImage}
-              className={`shadow-3xl py-2 px-4 rounded-lg font-bold border border-white hover:cursor-pointer hover:border hover:border-gray ${
-                isHidden ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              +
-            </button>
-          </label>
-        </div>
+
         {/* Avatar end */}
         {/* Account type */}
         <div className="flex flex-col font-inder">

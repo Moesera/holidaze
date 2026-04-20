@@ -38,7 +38,7 @@ function Booking({ venueId, venueGuests, bookingsArray }) {
     }
   }, [bookingsArray, handleBookingArray]);
 
-  function getDatesBetween(startDate, endDate) {
+  const getDatesBetween = (startDate, endDate) => {
     const dates = [];
     let currentDate = startDate;
     while (currentDate <= endDate) {
@@ -56,7 +56,7 @@ function Booking({ venueId, venueGuests, bookingsArray }) {
     resolver: yupResolver(schema),
   });
 
-  function onSubmit(data) {
+  const onSubmit = (data) => {
     const method = "POST";
     const updatedData = { ...data, dateFrom: startDate, dateTo: endDate, venueId: venueId };
     apiData(updatedData, method);
@@ -68,7 +68,7 @@ function Booking({ venueId, venueGuests, bookingsArray }) {
     }, 2500);
   }
 
-  function FromDate({ className, children }) {
+  const FromDate = ({ className, children }) => {
     return (
       <div style={{ color: "#fff" }}>
         <CalendarContainer className={className}>

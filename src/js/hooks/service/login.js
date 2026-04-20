@@ -20,20 +20,18 @@ function useLogin(url) {
       });
 
       if (!res.ok) {
-        // Handle bad HTTP response
-        const data = await res.json();
-        if (data.errors && data.errors.length > 0) {
-          // Extract error message from response data
-          const errorMessage = data.errors[0].message;
-          throw new Error(errorMessage);
-        } else {
-          throw new Error(`Request failed with status code ${res.status}`);
-        }
+        throw new Error(`http ${res.statusCode} : ${res.statusText}`);
       }
 
       const data = await res.json();
+
+      if (data.errors && data.errors.length > 0) {
+        // Extract error message from response data
+        const errorMessage = data.errors[0].message;
+        throw new Error(errorMessage);
+      }
   
-      const { accessToken, ...user } = data;
+      const { accessToken, ...user } = data.data || data;
   
       localStorage.setItem("token", JSON.stringify(accessToken));
       localStorage.setItem("user", JSON.stringify(user));
