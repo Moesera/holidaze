@@ -35,7 +35,7 @@ export function useGet(url, offset, limit, auth = false) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const token = getItem("token");
-  const API_KEY = import.meta.env.VITE_APP_NOROFF_API_KEY;
+  const API_KEY = import.meta.env.VITE_NOROFF_API_KEY;
 
   const buildHeader = ({ auth }) => {
     const headers = {};
